@@ -25,7 +25,7 @@ const Completed = () => {
   const [date, setDate] = React.useState<Date>()
   return (
     <>
-     <div className="bg-white border-l-4 border-green-500 rounded-xl cursor-pointer">
+     <div className="bg-white border-l-4 border-green-500 rounded-xl cursor-pointer mb-4">
         <Card>
             <CardHeader className="relative">
                 <div className="flex items-center">
@@ -90,7 +90,7 @@ const Completed = () => {
                             {date ? format(date, "dd/MM/yyyy") : <span>Pick a date</span>}
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 shadow-none">
+                    <PopoverContent className="w-auto p-0 shadow-none bg-white">
                         <Calendar
                             mode="single"
                             selected={date}

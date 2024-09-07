@@ -4,9 +4,7 @@ import InProgress from './InProgress'
 import Completed from './Completed'
 import { Button } from "@/components/ui/button"
 
-
 const DashBoard = () => {
-  
   return (
     <>
       <div className="flex items-center justify-between mb-4 bg-slate-300 p-6 pl-0 rounded-2xl m-7">
