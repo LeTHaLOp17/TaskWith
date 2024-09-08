@@ -4,28 +4,29 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-  } from "@/components/ui/card"
-  import * as React from "react"
-  import { format } from "date-fns"
-  import { Calendar as CalendarIcon } from "lucide-react"
-   
-  import { cn } from "@/lib/utils"
-  import { Button } from "@/components/ui/button"
-  import { Calendar } from "@/components/ui/calendar"
-  import {
+} from "@/components/ui/card"
+import * as React from "react"
+import { format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-  } from "@/components/ui/popover"
-  import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-  import { ChevronDownIcon } from '@heroicons/react/20/solid'
-  
-  
-  const ToDo = () => {
-      const [date, setDate] = React.useState<Date>()
-      return (
+} from "@/components/ui/popover"
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu"
+
+
+const ToDo = () => {
+    const [date, setDate] = React.useState<Date>()
+    return (
         <>
-          <div className="bg-white border-l-4 border-violet-500 rounded-xl cursor-pointer mb-4">
+        <div className="bg-white border-l-4 border-violet-500 rounded-xl cursor-pointer mb-4">
             <Card>
                 <CardHeader className="relative">
                 <div className="m-2 ml-0.5">
@@ -46,6 +47,11 @@ import {
                                 transition
                                 className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                             >
+                                  <DropdownMenuLabel className="ml-3 mt-3 font-semibold">Change Status</DropdownMenuLabel>
+                                  <div className="flex justify-center m-2 -mb-1">
+                                <hr className="border-t border-gray-400 w-11/12" />
+                                </div>
+                                
                                 <div className="py-1">
                                     <MenuItem>
                                         <a
@@ -109,6 +115,5 @@ import {
         </div>
         </>
     )
-  }
-  
-  export default ToDo
+}
+export default ToDo

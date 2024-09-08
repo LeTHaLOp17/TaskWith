@@ -17,7 +17,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 export function CreateFile() {
   const [title, setTitle] = React.useState("");
@@ -25,6 +25,7 @@ export function CreateFile() {
   const [date, setDate] = React.useState<Date | null>(null);
   const [selectedStatus, setSelectedStatus] = React.useState("Select Status");
   const [selectedPriority, setSelectedPriority] = React.useState("Select Priority");
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   const handleSubmit = async () => {
     if (!title || !date) {
@@ -49,6 +50,9 @@ export function CreateFile() {
       setDate(null);
       setSelectedStatus("Select Status");
       setSelectedPriority("Select Priority");
+      
+      // Close the dialog
+      setIsDialogOpen(false);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -57,9 +61,9 @@ export function CreateFile() {
   return (
     <>
       <div>
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline">Create Task</Button>
+            <Button variant="outline" onClick={() => setIsDialogOpen(true)}>Create Task</Button>
           </DialogTrigger>
           <DialogContent className="s m:max-w-max bg-white">
             <DialogHeader>
@@ -87,21 +91,21 @@ export function CreateFile() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="flex w-auto flex-col space-y-2 p-2 bg-white">
-                <Select
-                  onValueChange={(value) =>
-                    setDate(addDays(new Date(), parseInt(value)))
-                  }
-                >
-                <SelectTrigger>
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper" className="bg-white">
-                    <SelectItem value="0">Today</SelectItem>
-                    <SelectItem value="1">Tomorrow</SelectItem>
-                    <SelectItem value="3">In 3 days</SelectItem>
-                    <SelectItem value="7">In a week</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <Select
+                    onValueChange={(value) =>
+                      setDate(addDays(new Date(), parseInt(value)))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper" className="bg-white">
+                      <SelectItem value="0">Today</SelectItem>
+                      <SelectItem value="1">Tomorrow</SelectItem>
+                      <SelectItem value="3">In 3 days</SelectItem>
+                      <SelectItem value="7">In a week</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <Calendar
                     mode="single"
                     selected={date}
@@ -160,6 +164,15 @@ export function CreateFile() {
             </div>
 
             <DialogFooter>
+              <div>
+                <Button
+                  variant="outline"
+                  className="border-red-700 bg-red-200"
+                  onClick={() => setIsDialogOpen(false)} // Close the dialog
+                >
+                  Cancel
+                </Button>
+              </div>
               <Button onClick={handleSubmit} className="bg-sky-500 hover:bg-sky-700 text-white">
                 Save changes
               </Button>
@@ -170,3 +183,4 @@ export function CreateFile() {
     </>
   );
 }
+export default CreateFile

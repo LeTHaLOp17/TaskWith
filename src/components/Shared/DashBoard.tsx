@@ -1,15 +1,14 @@
-// import React from 'react'
 import ToDo from './ToDo'
 import InProgress from './InProgress'
 import Completed from './Completed'
-import { CreateFile } from './CreateFile'
+import CreateFile from './CreateFile'
 
 const DashBoard = () => {
   return (
     <>
       <div className="flex items-center justify-between mb-4 bg-slate-300 p-6 pl-0 rounded-2xl m-7">
     <h2 className="text-2xl font-bold ml-5">TaskWith</h2>
-    <div className="text-white bg-sky-600 hover:bg-sky-500">
+    <div className="text-white bg-sky-600 hover:bg-sky-200">
       <CreateFile />
     </div>
   </div>
