@@ -28,6 +28,11 @@ const Completed = () => {
      <div className="bg-white border-l-4 border-green-500 rounded-xl cursor-pointer mb-4">
         <Card>
             <CardHeader className="relative">
+            <div className="m-2 ml-0.5">
+                <p className="bg-green-300 text-white font-semibold pt-3 pl-5 pr-5 pb-3 rounded-xl inline">
+                    High
+                </p>
+            </div>
                 <div className="flex items-center">
                     <CardTitle className="text-3xl font-bold flex-grow">BrainStroming</CardTitle>
                     <Menu as="div" className="relative">

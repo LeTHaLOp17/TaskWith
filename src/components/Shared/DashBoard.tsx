@@ -2,16 +2,16 @@
 import ToDo from './ToDo'
 import InProgress from './InProgress'
 import Completed from './Completed'
-import { Button } from "@/components/ui/button"
+import { CreateFile } from './CreateFile'
 
 const DashBoard = () => {
   return (
     <>
       <div className="flex items-center justify-between mb-4 bg-slate-300 p-6 pl-0 rounded-2xl m-7">
     <h2 className="text-2xl font-bold ml-5">TaskWith</h2>
-    <Button variant="outline" className="text-blue-600 bg-sky-300">
-      Create new
-    </Button>
+    <div className="text-white bg-sky-600 hover:bg-sky-500">
+      <CreateFile />
+    </div>
   </div>
       
 
