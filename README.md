@@ -15,7 +15,7 @@
 - Create a Notion page and copy all the contents from here
 - Create a fresh GitHub repo giving it a relevant name
 - Use **React/Next.js** for this task (using Next.js will be a PLUS)
-- Configure app for **TypeScript** support as writing the code with TypeScript will be a PLUS
+- Configure the app for **TypeScript** support as writing the code with TypeScript will be a PLUS
 - Consider the provided UI references for developing your UI (not necessarily be the exact same)
 - Git commit in proper intervals (it will have an edge in the selection process)
 - Push all changes when completed
@@ -26,7 +26,7 @@
 ## Task Checklist
 
 <aside>
-💡 The following will be categorized into **MUST** do’s ****& **PLUS** do’s
+💡 The following will be categorized into **MUST** do’s & **PLUS** do’s
 
 **MUST -** The mandatory ones, based on these, the task will be MEASURED. Should submit the task only after completing these.
 
