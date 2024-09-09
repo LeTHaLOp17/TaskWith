@@ -8,6 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu';
 import { db } from '@/components/FireBase';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useDrag } from 'react-dnd';
 
 interface Task {
   id: string;
@@ -40,24 +41,27 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
     }
   };
 
+
+  // This will handle the delete part of the card
   const handleDelete = async () => {
     try {
       const taskRef = doc(db, 'tasks', task.id);
       await deleteDoc(taskRef);
       onTaskDelete(task.id);
-      setContextMenuPosition(null); // Hide context menu after delete
+      setContextMenuPosition(null); 
     } catch (error) {
       console.error('Error deleting task: ', error);
     }
   };
 
+   // This will handle the edit part of the card
   const handleEdit = async () => {
     if (isEditing) {
       try {
         const taskRef = doc(db, 'tasks', task.id);
         await updateDoc(taskRef, { title: editedTitle, message: editedMessage });
         setIsEditing(false);
-        setContextMenuPosition(null); // Hide context menu after save
+        setContextMenuPosition(null); 
       } catch (error) {
         console.error('Error updating task: ', error);
       }
@@ -66,15 +70,27 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
     }
   };
 
+//  This will is for drag and drop part of the card
+  const [{ isDragging }, drag] = useDrag({
+    type: 'TASK',
+    item: { id: task.id, currentStatus: task.status },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+
   const handleContextMenu = (event: MouseEvent) => {
-    event.preventDefault(); // Prevent default context menu
+    event.preventDefault();
     const { clientX: x, clientY: y } = event;
     setContextMenuPosition({ x, y });
   };
 
+
   const handleCloseContextMenu = () => {
     setContextMenuPosition(null);
   };
+
 
   const statusColors: Record<string, string> = {
     ToDo: 'border-blue-500',
@@ -82,22 +98,32 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
     Completed: 'border-green-500',
   };
 
+  // Priority css
   const priorityColors: Record<string, string> = {
     High: "bg-red-300 text-red-600 font-semibold pt-3 pl-5 pr-5 pb-3 rounded-xl inline text-red-800",
     Medium: "bg-yellow-200 font-semibold pt-3 pl-5 pr-5 pb-3 rounded-xl inline text-yellow-600",
     Low: "bg-green-300 text-white font-semibold pt-3 pl-5 pr-5 pb-3 rounded-xl inline text-green-600", 
   };
 
+  //clock
   const formattedCreationDate =
     task.date instanceof Timestamp
       ? format(task.date.toDate(), "dd/MM/yyyy")
       : 'N/A';
 
+
   return (
+    <div
+      ref={drag}
+      className={`bg-white border-l-4 rounded-xl cursor-pointer mb-4 ${statusColors[task.status]} ${isDragging ? 'opacity-50' : ''}`}
+      onContextMenu={handleContextMenu}
+    >
     <div className={`bg-white border-l-4 rounded-xl cursor-pointer mb-4 ${statusColors[task.status]}`}>
       <Card>
         <CardHeader className="relative">
-          {/* Priority Badge */}
+
+
+          {/* this is for for prority design */}
           {task.priority && (
             <div className={`font-semibold pt-3 pl-5 pr-5 pb-3 rounded-xl inline ${priorityColors[task.priority]}`}>
               {task.priority}
@@ -106,7 +132,7 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
           <div className="flex items-center mt-2">
             <CardTitle 
               className="text-3xl font-bold flex-grow"
-              onContextMenu={handleContextMenu} // Attach context menu handler
+              onContextMenu={handleContextMenu} 
             >
               {isEditing ? (
                 <input 
@@ -119,10 +145,11 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
                 task.title
               )}
             </CardTitle>
-            {/* Status Dropdown */}
+
+
+            {/* this is Dropdown */}
             <Menu as="div" className="relative">
-              <MenuButton className="inline-flex w-full justify-left gap-x-1.5 bg-white flex items-center">
-                <span className="text-gray-700">Change Status</span>
+              <MenuButton className="inline-flex w-full justify-left gap-x-1.5 bg-white items-center">
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 text-gray-400" />
               </MenuButton>
               <MenuItems
@@ -162,9 +189,10 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
             </Menu>
           </div>
         </CardHeader>
-
         <CardContent>
-          {/* Description / Message */}
+
+
+          {/* This is descprition design */}
           {isEditing ? (
             <textarea 
               value={editedMessage} 
@@ -174,7 +202,8 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
           ) : (
             task.message && <p className="font-normal mt-2">{task.message}</p>
           )}
-          {/* Save Button */}
+
+          {/* Sbutton for save */}
           {isEditing && (
             <div className="mt-4 flex justify-end">
               <button 
@@ -187,13 +216,14 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
           )}
         </CardContent>
 
-        {/* Horizontal Line */}
+        {/* for dividingi used horizontal Line */}
         <div className="flex justify-center mb-4">
           <hr className="border-t border-gray-400 w-11/12" />
         </div>
 
         <CardFooter>
-          {/* Display Creation Date */}
+
+          {/* Display the date */}
           <div className="text-gray-500">
             <CalendarIcon className="mr-2 inline h-5 w-5 -mt-2" />
             {`${formattedCreationDate}`}
@@ -233,6 +263,7 @@ const Completed: React.FC<CompletedProps> = ({ task, onStatusChange, onTaskDelet
           )}
         </div>
       )}
+    </div>
     </div>
   );
 };

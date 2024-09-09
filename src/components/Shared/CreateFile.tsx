@@ -24,7 +24,6 @@ export function CreateFile() {
 
   const handleSubmit = async () => {
     if (!title || !date || selectedStatus === "Select Status") {
-      // Add proper validation feedback here
       return;
     }
   
@@ -32,11 +31,12 @@ export function CreateFile() {
       await addDoc(collection(db, "tasks"), {
         title,
         message,
-        date: Timestamp.fromDate(date),  // Ensure date is correctly formatted
+        date: Timestamp.fromDate(date), 
         status: selectedStatus,
-        priority: selectedPriority !== "Select Priority" ? selectedPriority : undefined,  // Store priority if selected
+        priority: selectedPriority !== "Select Priority" ? selectedPriority : undefined,  
       });
       
+
       // Reset form and close dialog
       setTitle("");
       setMessage("");
@@ -47,7 +47,6 @@ export function CreateFile() {
       
     } catch (e) {
       console.error("Error adding document: ", e);
-      // Handle error feedback
     }
   };
   
@@ -74,7 +73,7 @@ export function CreateFile() {
             <Textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here." id="message" className="font-thin" />
           </div>
 
-          {/* Date Picker */}
+          {/* Date Picker shadcnui */}
           <div className="bg-white">
             <Popover>
               <PopoverTrigger asChild>
@@ -102,13 +101,13 @@ export function CreateFile() {
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={setDate} // Set the selected date
+                  onSelect={setDate} 
                 />
               </PopoverContent>
             </Popover>
           </div>
 
-          {/* Status Selection */}
+          {/* Sttus selection */}
           <div>
             <Label className="text-lg">Status</Label>
             <Menu as="div" className="relative text-left">
@@ -132,7 +131,7 @@ export function CreateFile() {
             </Menu>
           </div>
 
-          {/* Priority Selection */}
+          {/* priority selection */}
           <div>
             <Label className="text-lg">Priority</Label>
             <Menu as="div" className="relative text-left">
@@ -160,7 +159,7 @@ export function CreateFile() {
             <Button
               variant="outline"
               className="border-red-700 bg-red-200"
-              onClick={() => setIsDialogOpen(false)} // Close the dialog
+              onClick={() => setIsDialogOpen(false)} 
             >
               Cancel
             </Button>

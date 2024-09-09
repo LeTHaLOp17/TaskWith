@@ -8,6 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu';
 import { db } from '@/components/FireBase';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useDrag } from 'react-dnd';
 
 interface Task {
   id: string;
@@ -31,17 +32,24 @@ const ToDo: React.FC<ToDoProps> = ({ task, onStatusChange, onTaskDelete }) => {
   const [contextMenuPosition, setContextMenuPosition] = useState<{ x: number; y: number } | null>(null);
   const [showContextMenu, setShowContextMenu] = useState(false);
 
-  const handleStatusChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newStatus = event.target.value;
+  const handleStatusChange = async (newStatus: string) => {
     try {
       const taskRef = doc(db, 'tasks', task.id);
       await updateDoc(taskRef, { status: newStatus });
-
       onStatusChange(task.id, newStatus);
     } catch (error) {
       console.error('Error updating status: ', error);
     }
   };
+
+  const [{ isDragging }, drag] = useDrag({
+    type: 'TASK',
+    item: { id: task.id, currentStatus: task.status },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
 
   const handleDelete = async () => {
     try {
@@ -106,8 +114,13 @@ const ToDo: React.FC<ToDoProps> = ({ task, onStatusChange, onTaskDelete }) => {
       : 'N/A';
 
   return (
+    <div
+      ref={drag}
+      className={`bg-white border-l-4 rounded-xl cursor-pointer mb-4 ${statusColors[task.status]} ${isDragging ? 'opacity-50' : ''}`}
+      onContextMenu={handleContextMenu}
+    >
     <div className={`bg-white border-l-4 rounded-xl cursor-pointer mb-4 ${statusColors[task.status]}`}>
-      <Card onContextMenu={handleContextMenu}>
+      <Card>
         <CardHeader className="relative">
           {/* Priority Badge */}
           {task.priority && (
@@ -116,7 +129,10 @@ const ToDo: React.FC<ToDoProps> = ({ task, onStatusChange, onTaskDelete }) => {
             </div>
           )}
           <div className="flex items-center mt-2">
-            <CardTitle className="text-3xl font-bold flex-grow">
+            <CardTitle 
+              className="text-3xl font-bold flex-grow"
+              onContextMenu={handleContextMenu} // Attach context menu handler
+            >
               {isEditing ? (
                 <input 
                   type="text" 
@@ -128,9 +144,9 @@ const ToDo: React.FC<ToDoProps> = ({ task, onStatusChange, onTaskDelete }) => {
                 task.title
               )}
             </CardTitle>
+            {/* Status Dropdown */}
             <Menu as="div" className="relative">
-              <MenuButton className="inline-flex w-full justify-left gap-x-1.5 bg-white flex items-center">
-                <span className="text-gray-700">Change Status</span>
+              <MenuButton className="inline-flex w-full justify-left gap-x-1.5 bg-white items-center">
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 text-gray-400" />
               </MenuButton>
               <MenuItems
@@ -196,13 +212,14 @@ const ToDo: React.FC<ToDoProps> = ({ task, onStatusChange, onTaskDelete }) => {
           )}
         </CardContent>
 
-        {/* Horizontal Line */}
+        {/* for dividingi used horizontal Line  */}
         <div className="flex justify-center mb-4">
           <hr className="border-t border-gray-400 w-11/12" />
         </div>
 
         <CardFooter>
-          {/* Display Creation Date */}
+          
+          {/* Display date */}
           <div className="text-gray-500">
             <CalendarIcon className="mr-2 inline h-5 w-5 -mt-2" />
             {`${formattedCreationDate}`}
@@ -230,6 +247,7 @@ const ToDo: React.FC<ToDoProps> = ({ task, onStatusChange, onTaskDelete }) => {
           </button>
         </div>
       )}
+    </div>
     </div>
   );
 };

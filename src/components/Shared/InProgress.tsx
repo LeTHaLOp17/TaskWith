@@ -8,6 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu';
 import { db } from '@/components/FireBase';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useDrag } from 'react-dnd';
 
 interface Task {
   id: string;
@@ -48,12 +49,12 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
         await updateDoc(taskRef, { title: editedTitle, message: editedMessage });
         onTaskEdit(task.id, editedTitle, editedMessage);
         setIsEditing(false);
-        setContextMenuPosition(null); // Hide context menu after save
+        setContextMenuPosition(null); 
       } catch (error) {
         console.error('Error updating task: ', error);
       }
     } else {
-      setIsEditing(true); // Enter editing mode
+      setIsEditing(true); 
     }
   };
 
@@ -62,14 +63,22 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
       const taskRef = doc(db, 'tasks', task.id);
       await deleteDoc(taskRef);
       onTaskDelete(task.id);
-      setContextMenuPosition(null); // Hide context menu after delete
+      setContextMenuPosition(null); 
     } catch (error) {
       console.error('Error deleting task: ', error);
     }
   };
 
+  const [{ isDragging }, drag] = useDrag({
+    type: 'TASK',
+    item: { id: task.id, currentStatus: task.status },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
   const handleContextMenu = (event: MouseEvent) => {
-    event.preventDefault(); // Prevent default context menu
+    event.preventDefault(); 
     const { clientX: x, clientY: y } = event;
     setContextMenuPosition({ x, y });
   };
@@ -96,6 +105,11 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
       : 'N/A';
 
   return (
+    <div
+      ref={drag}
+      className={`bg-white border-l-4 rounded-xl cursor-pointer mb-4 ${statusColors[task.status]} ${isDragging ? 'opacity-50' : ''}`}
+      onContextMenu={handleContextMenu}
+    >
     <div className={`bg-white border-l-4 rounded-xl cursor-pointer mb-4 ${statusColors[task.status]}`}>
       <Card>
         <CardHeader className="relative">
@@ -121,10 +135,10 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
                 task.title
               )}
             </CardTitle>
-            {/* Status Dropdown */}
+
+            {/* this is for change the status by dropdown */}
             <Menu as="div" className="relative">
-              <MenuButton className="inline-flex w-full justify-left gap-x-1.5 bg-white flex items-center">
-                <span className="text-gray-700">Change Status</span>
+              <MenuButton className="inline-flex w-full justify-left gap-x-1.5 bg-white items-center">
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 text-gray-400" />
               </MenuButton>
               <MenuItems
@@ -164,9 +178,9 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
             </Menu>
           </div>
         </CardHeader>
-
         <CardContent>
-          {/* Description / Message */}
+
+          {/* Description */}
           {isEditing ? (
             <textarea 
               value={editedMessage} 
@@ -188,13 +202,15 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
             </div>
           )}
         </CardContent>
-        {/* Horizontal Line */}
+
+        {/* for dividingi used horizontal Line */}
         <div className="flex justify-center mb-4">
           <hr className="border-t border-gray-400 w-11/12" />
         </div>
 
         <CardFooter>
-          {/* Display Creation Date */}
+
+          {/* Display the date */}
           <div className="text-gray-500">
             <CalendarIcon className="mr-2 inline h-5 w-5 -mt-2" />
             {`${formattedCreationDate}`}
@@ -235,6 +251,7 @@ const InProgress: React.FC<InProgressProps> = ({ task, onStatusChange, onTaskEdi
         </div>
       )}
         
+    </div>
     </div>
   );
 };
