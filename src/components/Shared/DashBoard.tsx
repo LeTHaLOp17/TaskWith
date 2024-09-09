@@ -1,5 +1,5 @@
   import React, { useEffect, useState } from 'react';
-  import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+  import { collection, getDocs, doc, updateDoc, Timestamp } from 'firebase/firestore';
   import { db } from '@/components/FireBase';
   import ToDo from './ToDo';
   import InProgress from './InProgress';
@@ -12,8 +12,8 @@
     id: string;
     title: string;
     message?: string;
-    priority?: string;
-    date?: string;
+    priority?: 'High' | 'Medium' | 'Low';
+    date?: Timestamp | null;
     status: string;
   }
 
@@ -24,16 +24,21 @@
       const fetchTasks = async () => {
         try {
           const querySnapshot = await getDocs(collection(db, 'tasks'));
-          const tasksList = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...(doc.data() as Omit<Task, 'id'>),
-          }));
+          const tasksList = querySnapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<Task, 'id'>;
+            return {
+              id: doc.id,
+              ...data,
+              priority: data.priority as 'High' | 'Medium' | 'Low' | undefined, // Ensure the type aligns
+            };
+          });
           console.log('Fetched tasks:', tasksList); 
           setTasks(tasksList);
         } catch (error) {
           console.error('Error fetching tasks: ', error);
         }
       };
+      
 
       fetchTasks();
     }, []);
@@ -76,7 +81,9 @@
             <h2 className="text-xl font-semibold mb-2 text-center bg-violet-500 p-4 rounded-t-xl">To Do</h2>
             <div className='rounded-xl p-9'>
               {toDoTasks.map(task => (
-                <ToDo key={task.id} task={task} onStatusChange={handleStatusChange} />
+                <ToDo key={task.id} task={task} onStatusChange={handleStatusChange} onTaskDelete={function (): void {
+                  throw new Error('Function not implemented.');
+                } } />
               ))}
             </div>
           </div>
@@ -86,7 +93,12 @@
             <h2 className="text-xl font-semibold mb-2 text-center bg-yellow-400 p-4 rounded-t-xl">In Progress</h2>
             <div className='rounded-xl p-9'>
               {inProgressTasks.map(task => (
-                <InProgress key={task.id} task={task} onStatusChange={handleStatusChange} />
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                <InProgress key={task.id} task={task} onStatusChange={handleStatusChange} onTaskEdit={function (_id: string, _newTitle: string): void {
+                  throw new Error('Function not implemented.');
+                } } onTaskDelete={function (): void {
+                  throw new Error('Function not implemented.');
+                } } />
               ))}
             </div>
           </div>
@@ -96,7 +108,9 @@
             <h2 className="text-xl font-semibold mb-2 text-center bg-green-500 p-4 rounded-t-xl">Completed</h2>
             <div className='rounded-xl p-9'>
               {completedTasks.map(task => (
-                <Completed key={task.id} task={task} onStatusChange={handleStatusChange} />
+                <Completed key={task.id} task={task} onStatusChange={handleStatusChange} onTaskDelete={function (): void {
+                  throw new Error('Function not implemented.');
+                } } />
               ))}
             </div>
           </div>
