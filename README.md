@@ -36,21 +36,21 @@
 
 ### MUST Do’s
 
-- [ ]  Created a Notion doc and copied all contents
-- [ ]  Created a GitHub repository
-- [ ]  Used React/Next.js for the project
-- [ ]  **Integrated Firebase to store your tasks**
-- [ ]  Complete all the tasks mentioned above
-    - [Task Requirements:](https://www.notion.so/Task-Requirements-68b8771fec25437bb02c49ac50e31f1b?pvs=21)
-- [ ]  Implemented proper error handling
-- [ ]  Deployed on Vercel
+- [✔]  Created a Notion doc and copied all contents
+- [✔]  Created a GitHub repository
+- [✔]  Used React/Next.js for the project
+- [✔]  **Integrated Firebase to store your tasks**
+- [✔]  Complete all the tasks mentioned above
+    - [Task Requirements:](https://www.notion.so/Getting-Started-6c621484a3b147e1b9db62d66c69d480)
+- [✔]  Implemented proper error handling
+- [✔]  Deployed on Vercel
 
 ### PLUS Do’s
 
-- [ ]  Made git commits with appropriate commit messages
-- [ ]  Used Typescript
-- [ ]  Used Tailwind or other CSS Framework
-- [ ]  Using a component library → Ant design (recommended)/Material UI/React Bootstrap
+- [✔]  Made git commits with appropriate commit messages
+- [✔]  Used Typescript
+- [✔]  Used Tailwind or other CSS Framework
+- [✔]  Using a component library → Ant design (recommended)/Material UI/React Bootstrap
 - [ ]  **UI detailing:**
     - [ ]  Change status with drag-and-drop functionality
-    - [ ]  **Followed reference UI**
+    - [✔]  **Followed reference UI**
