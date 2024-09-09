@@ -118,13 +118,13 @@ export function CreateFile() {
                 </MenuButton>
               </div>
               <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none">
-                <MenuItem onClick={() => setSelectedStatus("ToDo")}>
+                <MenuItem as={Button} className={"w-full hover:bg-slate-100"} onClick={() => setSelectedStatus("ToDo")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ToDo</span>
                 </MenuItem>
-                <MenuItem onClick={() => setSelectedStatus("InProgress")}>
+                <MenuItem as={Button} className={"w-full hover:bg-slate-100"} onClick={() => setSelectedStatus("InProgress")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">In Progress</span>
                 </MenuItem>
-                <MenuItem onClick={() => setSelectedStatus("Completed")}>
+                <MenuItem as={Button} className={"w-full hover:bg-slate-100"} onClick={() => setSelectedStatus("Completed")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Completed</span>
                 </MenuItem>
               </MenuItems>
@@ -142,13 +142,13 @@ export function CreateFile() {
                 </MenuButton>
               </div>
               <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none">
-                <MenuItem onClick={() => setSelectedPriority("High")}>
+                <MenuItem as={Button} className={"w-full hover:bg-slate-100"} onClick={() => setSelectedPriority("High")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">High</span>
                 </MenuItem>
-                <MenuItem onClick={() => setSelectedPriority("Medium")}>
+                <MenuItem as={Button} className={"w-full hover:bg-slate-100"} onClick={() => setSelectedPriority("Medium")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Medium</span>
                 </MenuItem>
-                <MenuItem onClick={() => setSelectedPriority("Low")}>
+                <MenuItem as={Button} className={"w-full hover:bg-slate-100"} onClick={() => setSelectedPriority("Low")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Low</span>
                 </MenuItem>
               </MenuItems>
