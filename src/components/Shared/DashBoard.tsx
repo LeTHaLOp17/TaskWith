@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/components/FireBase';
 import ToDo from './ToDo';
 import InProgress from './InProgress';
@@ -26,6 +26,7 @@ const DashBoard: React.FC = () => {
           id: doc.id,
           ...(doc.data() as Omit<Task, 'id'>),
         }));
+        console.log('Fetched tasks:', tasksList); // Debug log
         setTasks(tasksList);
       } catch (error) {
         console.error('Error fetching tasks: ', error);
@@ -34,6 +35,22 @@ const DashBoard: React.FC = () => {
 
     fetchTasks();
   }, []);
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      const taskRef = doc(db, 'tasks', id);
+      await updateDoc(taskRef, { status: newStatus });
+
+      // Update local state
+      setTasks(prevTasks => 
+        prevTasks.map(task => 
+          task.id === id ? { ...task, status: newStatus } : task
+        )
+      );
+    } catch (error) {
+      console.error('Error updating status: ', error);
+    }
+  };
 
   const toDoTasks = tasks.filter(task => task.status === 'ToDo');
   const inProgressTasks = tasks.filter(task => task.status === 'InProgress');
@@ -51,32 +68,32 @@ const DashBoard: React.FC = () => {
       {/* Grid Layout for Components */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-7">
         
-        {/* This is ToDo */}
+        {/* ToDo */}
         <div className="bg-white shadow-xl rounded-xl">
           <h2 className="text-xl font-semibold mb-2 text-center bg-violet-500 p-4 rounded-t-xl">To Do</h2>
           <div className='rounded-xl p-9'>
             {toDoTasks.map(task => (
-              <ToDo key={task.id} task={task} />
+              <ToDo key={task.id} task={task} onStatusChange={handleStatusChange} />
             ))}
           </div>
         </div>
 
-        {/* Progress is this */}
+        {/* In Progress */}
         <div className="bg-white shadow-xl rounded-xl">
           <h2 className="text-xl font-semibold mb-2 text-center bg-yellow-400 p-4 rounded-t-xl">In Progress</h2>
           <div className='rounded-xl p-9'>
             {inProgressTasks.map(task => (
-              <InProgress key={task.id} task={task} />
+              <InProgress key={task.id} task={task} onStatusChange={handleStatusChange} />
             ))}
           </div>
         </div>
 
-        {/* This is Completed */}
+        {/* Completed */}
         <div className="bg-white shadow-xl rounded-xl">
           <h2 className="text-xl font-semibold mb-2 text-center bg-green-500 p-4 rounded-t-xl">Completed</h2>
           <div className='rounded-xl p-9'>
             {completedTasks.map(task => (
-              <Completed key={task.id} task={task} />
+              <Completed key={task.id} task={task} onStatusChange={handleStatusChange} />
             ))}
           </div>
         </div>

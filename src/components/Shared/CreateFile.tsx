@@ -122,7 +122,7 @@ export function CreateFile() {
                 <MenuItem onClick={() => setSelectedStatus("ToDo")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ToDo</span>
                 </MenuItem>
-                <MenuItem onClick={() => setSelectedStatus("In Progress")}>
+                <MenuItem onClick={() => setSelectedStatus("InProgress")}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">In Progress</span>
                 </MenuItem>
                 <MenuItem onClick={() => setSelectedStatus("Completed")}>
