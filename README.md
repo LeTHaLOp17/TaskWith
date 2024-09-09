@@ -54,3 +54,4 @@
 - [ ]  **UI detailing:**
     - [ ]  Change status with drag-and-drop functionality
     - [✔]  **Followed reference UI**
+    - [✔] Used Shadcn-ui for ui
