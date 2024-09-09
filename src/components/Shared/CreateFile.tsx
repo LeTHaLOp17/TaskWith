@@ -50,7 +50,6 @@ export function CreateFile() {
     }
   };
   
-
   return (
     <>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -100,8 +99,8 @@ export function CreateFile() {
                 </Select>
                 <Calendar
                   mode="single"
-                  selected={date}
-                  onSelect={setDate} 
+                  selected={date || undefined}  
+                  onSelect={(selectedDate) => setDate(selectedDate ?? null)} 
                 />
               </PopoverContent>
             </Popover>
