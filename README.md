@@ -26,7 +26,7 @@
 ## Task Checklist
 
 <aside>
-💡 The following will be categorized into **MUST** do’s & **PLUS** do’s
+💡 The following will be categorized into MUST do’s & PLUS do’s
 
 **MUST -** The mandatory ones, based on these, the task will be MEASURED. Should submit the task only after completing these.
 
