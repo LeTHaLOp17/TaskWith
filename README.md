@@ -12,7 +12,7 @@ https://www.notion.so/Getting-Started-6c621484a3b147e1b9db62d66c69d480
 - Edit an existing task
 - Delete a task.
 - Change the status of a created task to move it into different columns.
-- Used the **.env** file for storing the Firebase API key, shouldn't expose to git
+- Used the **.env** file for storing the Firebase API key, not expose to git
 
 ## Task Checklist
 
